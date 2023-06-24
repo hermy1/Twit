@@ -20,6 +20,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
         'avatar',
@@ -60,6 +61,11 @@ class User extends Authenticatable
     public function likes() {
         return $this->hasMany(Like::class);
     }
+    //get the count of twits by a user
+    public function getTwitsCountAttribute(){
+        return $this->twits()->count();
+        //TODOFix me: this is not working
+    }
 
-   
+
 }

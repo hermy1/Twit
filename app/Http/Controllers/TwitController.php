@@ -29,7 +29,7 @@ class TwitController extends Controller
             //we fetch the twits ordering by the latest 
             
             //fetch twits, users and related comments, get by latest
-            'twits' => Twit::with(['user:id,name,avatar', 'comments:id,comment_body,like_dislike,created_at,user_id,twit_id,parent_id', 'comments.user:id,name,avatar','comments.replies','comments.replies.user','likes'])->latest()->get(),
+            'twits' => Twit::with(['user:id,name,avatar,username', 'comments:id,comment_body,like_dislike,created_at,user_id,twit_id,parent_id', 'comments.user:id,name,avatar','comments.replies','comments.replies.user','likes'])->latest()->get(),
             // get comment with replies
             // 'comments' => Comment::with('replies')->get(),
             // 'comments'=>Comment::whereNull('parent_id')->get()
@@ -97,7 +97,7 @@ class TwitController extends Controller
             ]);
         }
         //then redirect 
-        return redirect(route('twits.index'));
+        return redirect(route('twits.index'))->with('msg', 'Twit posted successfully!');
     }
 
     /**
@@ -106,9 +106,12 @@ class TwitController extends Controller
      * @param  \App\Models\Twit  $twit
      * @return \Illuminate\Http\Response
      */
-    public function show(Twit $twit)
+    public function show($id)
     {
-        //
+       
+        return Inertia::render('Twits/Show', [
+            'twit' => Twit::where('id', $id)->with(['user:id,name,avatar,username', 'comments:id,comment_body,like_dislike,created_at,user_id,twit_id,parent_id', 'comments.user:id,name,avatar','comments.replies','comments.replies.user','likes'])->first(),
+        ]);
     }
 
     /**
@@ -130,6 +133,7 @@ class TwitController extends Controller
     {
         $this->authorize('update', $twit);
         //TODO: delete image if twit is updated
+        //TODO: remove images from git use storage instead of images/public
      
         $img = $request->images;
         //remove only images patched in the $request object
@@ -171,21 +175,25 @@ class TwitController extends Controller
         //i'm getting images in images column
         $img = $twit->images;
     
+    
         //if images not 0 from db
-        if (count($img) > 0) {
-            foreach ($img as $image) {
-                //image exists in public images
-                if (file_exists(public_path('/uploads/images/').$image)) {
-                    //remove it
-                    unlink(public_path('/uploads/images/') . $image);
+        if(isset($img)){
+
+            if (count($img) > 0) {
+                foreach ($img as $image) {
+                    //image exists in public images
+                    if (file_exists(public_path('/uploads/images/').$image)) {
+                        //remove it
+                        unlink(public_path('/uploads/images/') . $image);
+                    }
                 }
             }
+            //then remove record from db
         }
-        //then remove record from db
         $twit->delete();
         //remove comments 
         $twit->comments()->delete();
         //redirect
-        return redirect(route('twits.index'));
+        return redirect(route('twits.index'))->with('msg', 'Twit deleted successfully!');
     }
 }

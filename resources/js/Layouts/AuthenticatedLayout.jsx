@@ -4,6 +4,7 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/inertia-react';
+import Toast from '@/Components/Toast';
 
 
 export default function Authenticated({ auth, header, children }) {
@@ -133,7 +134,7 @@ export default function Authenticated({ auth, header, children }) {
                     </div>
                 </div>
             </nav>
-
+            <Toast />                
             {header && (
                 <header className="bg-white shadow">
                     <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>

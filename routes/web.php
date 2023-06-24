@@ -30,7 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    // Route::get('/profile/{user}', [ProfileController::class, 'timeline'])->name('profile.timeline');
+    //show user profile using username
+    Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/twits/{id}', [TwitController::class, 'show'])->name('twits.show');
 
     Route::resource('twits',TwitController::class)->only(['index','store','update','destroy'])->middleware(['auth', 'verified']);
     Route::resource('comments',CommentController::class)->only(['store','update','destroy'])->middleware(['auth', 'verified']);

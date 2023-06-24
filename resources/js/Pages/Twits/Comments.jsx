@@ -7,7 +7,6 @@ import { usePage } from "@inertiajs/inertia-react";
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
 import Dropdown from "@/Components/Dropdown";
-import { comment } from "postcss";
 
 export default function Modal({ showModal, setShowModal, twit }) {
     dayjs.extend(relativeTime);

@@ -1,13 +1,15 @@
-import React, { useState, useCallback, useEffect,useRef } from "react";
+import React, { useEffect } from "react";
+import { useState, useCallback } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Dropdown from "./Dropdown";
 import PrimaryButton from "@/Components/PrimaryButton";
 import InputError from "@/Components/InputError";
-import { useForm, usePage, router, Link, InertiaLink } from "@inertiajs/inertia-react";
+import { useForm, usePage,router, Link } from "@inertiajs/inertia-react";
 import ImageViewer from "react-simple-image-viewer";
 import Comments from "@/Pages/Twits/Comments";
 import Like from "@/Components/Like";
+
 
 dayjs.extend(relativeTime);
 function Twit({ twit }) {
@@ -20,11 +22,10 @@ function Twit({ twit }) {
     const [currentImage, setCurrentImage] = useState([]);
     const [isViewerOpen, setIsViewerOpen] = useState(false);
 
+   
     //comments state
     const [showModal, setShowModal] = useState(false);
 
-    //link state
-    const [link, setLink] = useState(false);
 
     //open image viewer
     const openImageViewer = useCallback((index) => {
@@ -53,6 +54,7 @@ function Twit({ twit }) {
         );
     };
 
+    
     //submit
     const submit = (e) => {
         e.preventDefault();
@@ -63,38 +65,11 @@ function Twit({ twit }) {
         //TODO: clean upload btn after submit
     };
 
-    //routing to twit page {id}
-    const outerLinkRef = useRef(null);
-
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if(outerLinkRef.current && !outerLinkRef.current.contains(e.target) && e.target.id === "twit-header") {
-                handleClick();
-                // console.log('here')
-                // router.push(`/twits/${twit.id}`);
-            }
-        };
-        document.addEventListener("click", handleClickOutside);
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        }
-    }, [outerLinkRef]);
-    
-    const handleClick = (e) => {
-        //make this link dynamic
-        console.log(twit.id)
-        //  return window.location.href = `/twits/${twit.id}`;
-        // return router.visit(`/twits/${twit.id}`);
-
-    };
-
     return (
-        <div
-            className="space-x-2 bg-white rounded-lg mb-10"
-            ref={outerLinkRef}
-        >
-            <div id="twit-header" className="p-6 flex space-x-2">
-                
+        <div className="max-w-2xl mx-auto px-4">
+            {/* link */}
+
+            <div className="p-6 flex space-x-2">
                 <img
                     className="w-9 h-9 rounded-full"
                     src={`/uploads/avatar/${twit.user.avatar}`}
@@ -105,7 +80,7 @@ function Twit({ twit }) {
                         <div>
                             <Link href={`/profile/${twit.user.username}`}>
                                 <span className="text-gray-800">
-                                    {twit.user.name}
+                                    {twit.user.name} 
                                 </span>
                             </Link>
                             <small className="ml-2 text-sm text-gray-600">
@@ -142,16 +117,6 @@ function Twit({ twit }) {
                                         >
                                             Edit
                                         </button>
-                                        <Dropdown.Link
-                                            as="button"
-                                            href={route(
-                                                "twits.show",
-                                                twit.id
-                                            )}
-                                            method="get"
-                                        >
-                                            Go to twit
-                                        </Dropdown.Link>
                                         <Dropdown.Link
                                             as="button"
                                             href={route(
@@ -231,10 +196,7 @@ function Twit({ twit }) {
                             <p className="mt-4 md:break-normal md:break-all text-gray-900">
                                 {twit.message}
                             </p>
-                            <div
-                                id="twit-body"
-                                className="container grid grid-cols-3 gap-1 mx-auto"
-                            >
+                            <div className="container grid grid-cols-3 gap-1 mx-auto">
                                 {twit.images &&
                                     twit.images.map((image, index) => (
                                         <div className="w-full rounded">
@@ -269,57 +231,23 @@ function Twit({ twit }) {
                     )}
                 </div>
             </div>
-
-            <div id="twit-footer" className="px-4 ">
+            <div className="px-4 ">
                 {/* <span className="text-xs mr-2">0 Likes</span> */}
                 {twit.comments.length > 0 ? (
-                    <span
-                        className="text-xs text-zinc-600 cursor-pointer"
-                        onClick={() => setShowModal(true)}
-                    >
-                        <strong>
-                            {twit.comments.length === 1
-                                ? `${twit.comments.length} Comment`
-                                : `${
-                                      twit.comments.filter((element) => {
-                                          if (element.parent_id == null) {
-                                              return true;
-                                          }
-                                          // return false;
-                                      }).length
-                                  } Comments`}
-                        </strong>
+                    <span className="text-xs text-zinc-600 cursor-pointer" onClick={() => setShowModal(true)}>
+                        <strong>{twit.comments.length === 1 ? `${twit.comments.length} Comment`: `${twit.comments.filter(element => {
+                            if(element.parent_id == null){
+                                return true;
+                            }
+                            // return false;
+                        }).length} Comments`}</strong>
                     </span>
                 ) : null}
                 <hr className="hr mb-1" />
-                <Like twitId={twit.id} twitCount={twit.likes} />
-                <button
-                    className="rounded-full relative inline-flex items-center p-1 text-sm font-medium text-center text-black"
-                    onClick={() => setShowModal(true)}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.3}
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
-                        />
-                    </svg>
-                    <span className="p-2">Comment</span>
-                </button>
-                {/* linke here */}
+                <Like twitId={twit.id} twitCount={twit.likes} /> 
+                <span>Comments</span>
             </div>
-            <Comments
-                showModal={showModal}
-                setShowModal={setShowModal}
-                twit={twit}
-            />
+            
         </div>
     );
 }

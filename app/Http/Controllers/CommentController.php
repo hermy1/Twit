@@ -65,7 +65,8 @@ class CommentController extends Controller
         //     'comment_body' => 'comment_body'
         // ]);
 
-        return redirect(route('twits.index'))->with('comment posted!');
+        // return redirect(route('twits.index'))->with('comment posted!');
+        return redirect()->back()->with('msg','comment posted!');
     }
 
     /**
@@ -114,6 +115,7 @@ class CommentController extends Controller
         $comment = Comment::find($comment->id);
     
         $comment->delete();
-        return redirect(route('twits.index'))->with('comment deleted!');
+        // return redirect(route('twits.index'))->with('comment deleted!');
+        return redirect()->back()->with('msg','comment deleted!');
     }
 }

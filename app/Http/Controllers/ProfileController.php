@@ -10,10 +10,28 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
-    /**
+     /**
+     * Display the user's profile.
+     */
+    public function show($username){
+            
+            $user = User::where('username',$username)->first();
+            if($user == null){
+                // dd('user not found');
+                // return Redirect::to('twits')->with(['msg' =>'User not found']);
+                return redirect()->route('twits.index')->with('msg','User not found');
+            }
+            return Inertia::render('Profile/Timeline', [
+                'user' => $user->only('id', 'name', 'email', 'avatar', 'description','username','created_at'),
+                'twits' => $user->twits()->with(['user:id,name,avatar,username', 'comments:id,comment_body,like_dislike,created_at,user_id,twit_id,parent_id', 'comments.user:id,name,avatar','comments.replies','comments.replies.user','likes'])->latest()->get(),
+            ]);
+    }
+   
+     /**
      * Display the user's profile form.
      */
     public function edit(Request $request): Response

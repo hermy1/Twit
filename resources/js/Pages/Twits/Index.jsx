@@ -7,8 +7,10 @@ import Twit from "@/Components/Twit";
 import File from "@/Components/File";
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
+import Toast from "@/Components/Toast";
+import { usePage } from "@inertiajs/inertia-react";
 
-function Index({ auth, twits }) {
+function Index({ auth, twits}) {
     // dayjs.extend(relativeTime);
     //define props for form
     const { data, setData, post, processing, reset, errors } = useForm({
@@ -23,6 +25,8 @@ function Index({ auth, twits }) {
     const PaginatedResults = () => {
         setLoadmore(loadMore + TwitsPerPage);
     };
+   
+
 
     //post msg to controller & reset form
     const submit = (e) => {
@@ -32,6 +36,7 @@ function Index({ auth, twits }) {
     return (
         <AuthenticatedLayout auth={auth}>
             <Head title="Twits" />
+            {/* <Toast /> */}
             <div className="flex md:flex-row flex-col container mx-auto max-w-7xl mt-10">
                 <div className="basis-1/6 max-md:hidden ">
                     <div className="w-[19.875rem] rounded-lg bg-white text-[0.8125rem] leading-5 text-slate-900 ring-slate-700/10 sticky top-0">
@@ -98,34 +103,6 @@ function Index({ auth, twits }) {
                         </div>
                             
                         </form>
-                        {/* <form onSubmit={submit} encType="multipart/form-data">
-  <div className="mb-4 w-full rounded-lg border border-gray-200 bg-white">
-    <div className="rounded-t-lg bg-white px-4 py-2">
-      <label for="comment" className="sr-only">Your comment</label>
-      <textarea id="comment" rows="4" className="w-full border-0 bg-white px-0 text-sm text-gray-900 focus:ring-0" placeholder="What's on your mind? ..." required></textarea>
-    </div>
-    <div className="flex items-center justify-between border-t px-3 py-2">
-      <button type="submit" className="inline-flex items-center rounded-lg bg-blue-700 px-4 py-2.5 text-center text-xs font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-200">Post Twit</button>
-      <div className="flex space-x-1 pl-0 sm:pl-2"> */}
-        {/* <button type="file"  className="inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900">
-          <svg aria-hidden="true" className="h-8 w-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg>
-        </button> */}
-        {/* <File
-                                id="images"
-                                name="images"
-                                handleChange={(e) =>
-                                    setData("images", e.target.files)
-                                }
-                                className="mt-2 inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-                                multiple
-                                type="file"
-                            /> */}
-      {/* </div>
-    </div>
-  </div>
-</form>
- */}
-
                         <div className="mt-6">
                             {twits.slice(0, loadMore).map((twit) => (
                                 <Twit key={twit.id} twit={twit} />
@@ -167,13 +144,14 @@ function Index({ auth, twits }) {
                                         >
                                             <path d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
                                         </svg>
-                                        Sample Topic
+                                        Sample Topic..
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+           
             </div>
         </AuthenticatedLayout>
     );

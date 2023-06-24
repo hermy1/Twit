@@ -10,7 +10,7 @@ export default function Toast() {
     const [show, setShow] = React.useState(false);
 
     React.useEffect(() => {
-        if (flash.message) {
+        if (flash.msg) {
             setShow(true);
         }
     }, [flash]);
@@ -33,12 +33,12 @@ export default function Toast() {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
         >
-            <div className="fixed bottom-3 right-3 z-50">
-                <div className="bg-white shadow-lg rounded-lg p-4">
+            <div className="fixed bottom-0 right-3 z-50">
+                <div className="bg-green-400 shadow-lg rounded-lg p-4">
                     <div className="flex">
                         <div className="flex-shrink-0">
                             <svg
-                                className="h-6 w-6 text-green-400"
+                                className="h-6 w-6 text-gray-900"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -52,15 +52,15 @@ export default function Toast() {
                                 />
                             </svg>
                         </div>
-                        <div className="ml-3 w-0 flex-1 pt-0.5">
-                            <p className="text-sm leading-5 font-medium text-gray-900">
-                                {flash.message}
+                        <div className="ml-3 pt-0.5">
+                            <p className="text-sm leading-5 font-medium text-white">
+                                {flash.msg}
                             </p>
                         </div>
                         <div className="ml-4 flex-shrink-0 flex">
                             <button
                                 onClick={() => setShow(false)}
-                                className="inline-flex text-gray-400 focus:outline-none focus:text-gray-500 transition ease-in-out duration-150"
+                                className="inline-flex text-gray-900 focus:outline-none focus:text-gray-500 transition ease-in-out duration-150"
                             >
                                 <svg
                                     className="h-5 w-5"
@@ -79,6 +79,9 @@ export default function Toast() {
                     </div>
                 </div>
             </div>
+
+
+
         </Transition>
     );
 

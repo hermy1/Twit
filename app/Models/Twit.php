@@ -26,6 +26,10 @@ class Twit extends Model
         'created'=> TwitCreated::class,
     ];
 
+    //define primary key
+    protected $primaryKey = 'id';
+    
+
     // defining a relationship between twit and user:: user hasMany Twits:: Check User Modal
     public function user(){
         return $this->belongsTo(User::class);
