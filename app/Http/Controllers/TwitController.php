@@ -133,19 +133,22 @@ class TwitController extends Controller
      
         $img = $request->images;
         //remove only images patched in the $request object
-        $removedImage = $request->json; 
-        if (!is_array($img)) {
-            //get images in request changes object 
-            foreach ($img as $image) {
-                if (isset($twit->images)) {
-                    if (in_array($image, $twit->images)) {
-                        unlink(public_path('/uploads/images/') . $image);
-                        }
+        if(!empty($img)){
+            if (!is_array($img)) {
+                //get images in request changes object 
+                foreach ($img as $image) {
+                    if (isset($twit->images)) {
+                        if (in_array($image, $twit->images)) {
+                            unlink(public_path('/uploads/images/') . $image);
+                            }
+                    }
+                    
                 }
-                
+    
             }
 
         }
+        
 
         //validate 
         $validated = $request->validate([
@@ -170,7 +173,9 @@ class TwitController extends Controller
         $this->authorize('delete', $twit); 
         //i'm getting images in images column
         $img = $twit->images;
-    
+        
+        //if not null img
+        if(!empty($img))
         //if images not 0 from db
         if (count($img) > 0) {
             foreach ($img as $image) {
@@ -181,6 +186,8 @@ class TwitController extends Controller
                 }
             }
         }
+
+
         //then remove record from db
         $twit->delete();
         //remove comments 
