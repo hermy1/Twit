@@ -34,6 +34,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        //if a user has no username 
+        if (Auth::user()->username == null) {
+            //only have access to this route
+            return redirect()->route('profile.edit')->with('msg', 'Please update add a username first');
+        }
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

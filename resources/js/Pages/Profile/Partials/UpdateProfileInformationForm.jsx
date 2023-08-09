@@ -15,6 +15,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         email: user.email,
         avatar:user.avatar,
         description:user.description,
+        username:user.username,
     });
 
     const submit = (e) => {
@@ -64,6 +65,21 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     />
 
                     <InputError className="mt-2" message={errors.name} />
+                </div>
+                <div>
+                    <InputLabel for="username" value="Username" />
+
+                    <TextInput
+                        id="username"
+                        className="mt-1 block w-full"
+                        value={data.username}
+                        handleChange={(e) => setData('username', e.target.value)}
+                        required
+                        isFocused
+                        autoComplete="username"
+                    />
+
+                    <InputError className="mt-2" message={errors.username} />
                 </div>
 
                 <div>

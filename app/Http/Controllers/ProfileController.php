@@ -54,10 +54,14 @@ class ProfileController extends Controller
         $request->validated([
 
             'avatar' => 'nullable|image|max:2048',
-            'description'=> 'nullable|string|max:256'
+            'description'=> 'nullable|string|max:256',
+            // check if username isn't already exisiting
+            'username' => 'required|string|max:255|unique:users,username,' . $request->user()->id,
 
         ]);
 
+        //if username exists 
+        
 
         //if avatar contains image, set name and move to public folder upload.
         $avatar = $request->hasFile(('avatar'));
@@ -69,6 +73,8 @@ class ProfileController extends Controller
 
           //save description 
             $request->user()->update(['description' => $request->description]);
+        //save username
+        $request->user()->update(['username' => $request->username]);
               
 
         if ($request->user()->isDirty('email')) {
