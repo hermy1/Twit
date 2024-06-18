@@ -65,13 +65,3 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-Develop and design an intuitive, easy-to-use interface for managing document templates with mail merging fields.
-Implement a feature allowing users to generate reports on costs related to document requests.
-Design and implement a solution for reviewing and highlighting uploaded documents within the platform.
-Enable users to add approved documents to mailing lists while maintaining individual records of reviews.
-Build a mail merge-based system for generating personalized form letters using data from specific mailing lists.
-Ensure seamless integration between document reviews, mailing lists, and generated letters.
-Implement a search function enabling quick access to stored documents based on mailing list entries.
-Desired Technologies & Hosting:
-
-Our tech stack includes PHP, MySQL, HTML5, CSS3, and JavaScript (Laravel framework preferred)
